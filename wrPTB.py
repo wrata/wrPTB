@@ -14,6 +14,9 @@ class wrPTB:
 
     def __init__(self):
         self.board = PyMata3(com_port=self.portArduino())
+        self.TRLIGHT_RED = 8
+        self.TRLIGHT_YELLOW = 7
+        self.TRLIGHT_GREEN = 2
         self.BOARD_LED = 13
         self.ON = 1
         self.OFF = 0
@@ -33,8 +36,41 @@ class wrPTB:
                 self.board.digital_write(self.BOARD_LED, self.OFF)
                 self.board.shutdown()
 
+    def sleep(self, time):
+        self.board.sleep(time)
+                
+    def traffic(self, R=0, Y=0, G=0):
+        self.board.set_pin_mode(self.TRLIGHT_RED, Constants.OUTPUT)
+        self.board.set_pin_mode(self.TRLIGHT_YELLOW, Constants.OUTPUT)
+        self.board.set_pin_mode(self.TRLIGHT_GREEN, Constants.OUTPUT)
+        
+        if R == 0:
+            self.board.digital_write(self.TRLIGHT_RED, self.OFF)
+        else:
+            self.board.digital_write(self.TRLIGHT_RED, self.ON)
+        
+        if Y == 0:
+            self.board.digital_write(self.TRLIGHT_YELLOW, self.OFF)
+        else:
+            self.board.digital_write(self.TRLIGHT_YELLOW, self.ON)
+        
+        if G == 0:
+            self.board.digital_write(self.TRLIGHT_GREEN, self.OFF)
+        else:
+            self.board.digital_write(self.TRLIGHT_GREEN, self.ON)
+            
+        
 if __name__ == "__main__":
     ptb=wrPTB()
     print('PyTechBrain at port: ', ptb.portArduino())
+    ptb.traffic(R=1)
+    ptb.sleep(2)
+    ptb.traffic(R=1, Y=1)
+    ptb.sleep(2)
+    ptb.traffic(G=1)
+    ptb.sleep(2)
+    ptb.traffic(Y=1)
+    ptb.sleep(2)
+    ptb.traffic()
     ptb.blink()
 
