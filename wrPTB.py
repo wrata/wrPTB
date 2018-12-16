@@ -17,6 +17,9 @@ class wrPTB:
         self.TRLIGHT_RED = 8
         self.TRLIGHT_YELLOW = 7
         self.TRLIGHT_GREEN = 2
+        self.RGB_RED = 5
+        self.RGB_GREEN = 3
+        self.RGB_BLUE = 6
         self.BOARD_LED = 13
         self.ON = 1
         self.OFF = 0
@@ -58,19 +61,21 @@ class wrPTB:
             self.board.digital_write(self.TRLIGHT_GREEN, self.OFF)
         else:
             self.board.digital_write(self.TRLIGHT_GREEN, self.ON)
-            
+
+    def rgb(self, R=0, G=0, B=0):
+        self.board.set_pin_mode(self.RGB_RED, Constants.PWM)
+        self.board.set_pin_mode(self.RGB_GREEN, Constants.PWM)
+        self.board.set_pin_mode(self.RGB_BLUE, Constants.PWM)
+        self.board.analog_write(self.RGB_RED, R)
+        self.board.analog_write(self.RGB_GREEN, G)
+        self.board.analog_write(self.RGB_BLUE, B)
+
+    def exit(self):
+        self.traffic()
+        self.board.shutdown()
         
 if __name__ == "__main__":
     ptb=wrPTB()
     print('PyTechBrain at port: ', ptb.portArduino())
-    ptb.traffic(R=1)
-    ptb.sleep(2)
-    ptb.traffic(R=1, Y=1)
-    ptb.sleep(2)
-    ptb.traffic(G=1)
-    ptb.sleep(2)
-    ptb.traffic(Y=1)
-    ptb.sleep(2)
-    ptb.traffic()
     ptb.blink()
 
