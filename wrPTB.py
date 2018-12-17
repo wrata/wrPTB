@@ -21,6 +21,7 @@ class wrPTB:
         self.RGB_GREEN = 3
         self.RGB_BLUE = 6
         self.BOARD_LED = 13
+        self.PWM_LED = 9
         self.ON = 1
         self.OFF = 0
 
@@ -69,6 +70,11 @@ class wrPTB:
         self.board.analog_write(self.RGB_RED, R)
         self.board.analog_write(self.RGB_GREEN, G)
         self.board.analog_write(self.RGB_BLUE, B)
+
+    def pwm9(self, pin=9, pwm=0):
+        if pin in [3, 5, 6, 9]:
+            self.board.set_pin_mode(pin, Constants.PWM)
+            self.board.analog_write(pin, pwm)
 
     def exit(self):
         self.traffic()
